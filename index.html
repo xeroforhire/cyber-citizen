@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Last Day: Cyber-Citizens</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>The Last Day: Cyber-Citizens</h1>
+    </header>
+
+    <main>
+        <!-- Character Selection Screen -->
+        <div id="character-selection">
+            <h2>Select Your Character</h2>
+            <p>Please choose a character to begin your journey.</p>
+        </div>
+
+        <!-- Game Container -->
+        <div id="game-container" style="display: none;">
+            <!-- Character Avatar -->
+            <div id="character-avatar" class="avatar-container"></div>
+            
+            <!-- Player HUD -->
+            <section id="hud">
+                <h3>Player Stats</h3>
+                <div id="stats">
+                    <p>Morality: <span id="morality">50</span></p>
+                    <p>Infamy: <span id="infamy">50</span></p>
+                    <p>Addiction: <span id="addiction">0</span></p>
+                    <p>Health: <span id="health">100</span></p>
+                    <p>Reputation: <span id="reputation">0</span></p>
+                    <p>TK Power: <span id="tk-power">0</span></p>
+                </div>
+                <div id="inventory">
+                    <h3>Inventory</h3>
+                    <ul>
+                        <li>Healing Pack: <span id="healing-pack">1</span></li>
+                        <li>Smoke Bomb: <span id="smoke-bomb">1</span></li>
+                        <li>Adrenaline Shot: <span id="adrenaline-shot">1</span></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Scenario Display -->
+            <section id="scenario">
+                <h3>Scenario</h3>
+                <p id="scenario-text">Welcome to Rivers. Your survival starts now.</p>
+                <div id="choices">
+                    <button id="choice-left">Left</button>
+                    <button id="choice-right">Right</button>
+                </div>
+            </section>
+
+            <!-- Action Log -->
+            <section id="log">
+                <h3>Action Log</h3>
+                <ul id="log-entries">
+                    <li>Game Started</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- Game Over Overlay -->
+        <div id="game-over-overlay" class="overlay" style="display: none;">
+            <div class="overlay-content">
+                <h2>Game Over</h2>
+                <p id="game-over-message">Your journey ends here.</p>
+                <button id="reset-button">Restart Game</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 The Last Day: Cyber-Citizens. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
