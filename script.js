@@ -52,195 +52,15 @@ function stopSoundtrack() {
     soundtrack.currentTime = 0; // Reset to the beginning
 }
 
-// Scenarios and Outcomes
-const scenarios = [
-    // Morality vs. Infamy
-    {
-        id: "scenario_vendor",
-        text: "You encounter a street vendor selling questionable items. What do you do?",
-        leftCaption: "Buy something",
-        rightCaption: "Walk away",
-        leftEffect: () => {
-            player.infamy += 3;
-            player.addiction += 1;
-            return "You bought something shady, boosting your infamy but increasing your addiction.";
-        },
-        rightEffect: () => {
-            player.morality += 2;
-            return "You avoided trouble and preserved your morality.";
-        },
-    },
-    {
-        id: "scenario_citizen_rescue",
-        text: "You come across a citizen trapped under debris. Do you risk your safety to help them?",
-        leftCaption: "Help them",
-        rightCaption: "Keep moving",
-        leftEffect: () => {
-            player.morality += 4;
-            player.health -= 15;
-            return "You rescued the citizen, greatly increasing your morality but taking damage.";
-        },
-        rightEffect: () => {
-            player.infamy += 3;
-            return "You left them behind, saving yourself but losing respect.";
-        },
-    },
-
-    // Survival and Resource Management
-    {
-        id: "scenario_package",
-        text: "A suspicious package lies in front of you. Do you open it?",
-        leftCaption: "Leave it alone",
-        rightCaption: "Open the package",
-        leftEffect: () => {
-            player.health += 5;
-            player.morality -= 1;
-            return "You avoided potential danger but lost an opportunity to gain influence.";
-        },
-        rightEffect: () => {
-            player.infamy += 2;
-            player.health -= 10;
-            return "The package contained toxic material. You gained infamy but took damage.";
-        },
-    },
-    {
-        id: "scenario_neighbor_help",
-        text: "A neighbor asks for your help during a blackout. Do you assist?",
-        leftCaption: "Try to fix it",
-        rightCaption: "Stay home",
-        leftEffect: () => {
-            player.morality += 3;
-            player.health -= 10;
-            return "You helped restore power but injured yourself in the process.";
-        },
-        rightEffect: () => {
-            player.infamy += 2;
-            return "You stayed safe but lost respect among your neighbors.";
-        },
-    },
-    {
-        id: "scenario_escape",
-        text: "You find a hidden tunnel leading out of Rivers. Do you take the risk?",
-        leftCaption: "Escape",
-        rightCaption: "Stay",
-        leftEffect: () => {
-            endGame("Escape Ending: You left Rivers behind, seeking a new life beyond the city's walls.");
-        },
-        rightEffect: () => {
-            return "You chose to stay in Rivers, continuing your journey.";
-        },
-    },
-
-    // VR Addiction and Temptation
-    {
-        id: "scenario_vr_offer",
-        text: "A vendor offers free VR sessions. Do you accept?",
-        leftCaption: "Decline",
-        rightCaption: "Accept",
-        leftEffect: () => {
-            player.health += 5;
-            player.morality += 2;
-            return "You avoided the temptation and preserved your health.";
-        },
-        rightEffect: () => {
-            player.addiction += 3;
-            player.infamy += 2;
-            return "The VR session was addictive, increasing your addiction and infamy.";
-        },
-    },
-    {
-        id: "scenario_hacker_vr",
-        text: "A hacker offers to share hidden N.E.O. secrets in VR. Do you log in?",
-        leftCaption: "Log in",
-        rightCaption: "Ignore the offer",
-        leftEffect: () => {
-            player.infamy += 3;
-            player.addiction += 2;
-            return "You gained valuable secrets but at the cost of addiction.";
-        },
-        rightEffect: () => {
-            player.morality += 3;
-            return "You ignored the hacker, keeping your conscience clear.";
-        },
-    },
-
-    // Rebellion and Risk
-    {
-        id: "scenario_rebel_meeting",
-        text: "Someone gives you a flyer about a rebellion meeting. Do you go?",
-        leftCaption: "Attend the meeting",
-        rightCaption: "Ignore it",
-        leftEffect: () => {
-            player.infamy += 4;
-            player.addiction += 2;
-            return "You attended the meeting, gaining rebel allies but increasing your addiction.";
-        },
-        rightEffect: () => {
-            player.health += 5;
-            player.morality += 2;
-            return "You stayed away, keeping yourself safe and clear-headed.";
-        },
-    },
-    {
-        id: "scenario_neighbor_spy",
-        text: "An officer orders you to report a neighbor’s suspicious activity. Do you comply?",
-        leftCaption: "Report them",
-        rightCaption: "Refuse",
-        leftEffect: () => {
-            player.infamy += 5;
-            return "You reported your neighbor, gaining infamy among locals.";
-        },
-        rightEffect: () => {
-            player.morality += 3;
-            player.reputation -= 3;
-            return "You refused to comply, showing moral strength but losing favor with authorities.";
-        },
-    },
-
-    // Text-Based Combat Simulations
-    {
-        id: "scenario_street_punks",
-        text: "You encounter a group of street punks harassing civilians. What do you do?",
-        leftCaption: "Confront them",
-        rightCaption: "Walk away",
-        leftEffect: () => {
-            const success = Math.random() > 0.5; // 50% chance to win
-            if (success) {
-                player.reputation += 5;
-                player.morality += 2;
-                return "You confronted the street punks and successfully stopped them, gaining reputation and morality.";
-            } else {
-                player.health -= 20;
-                return "The street punks fought back, injuring you. You lost health but gained moral respect.";
-            }
-        },
-        rightEffect: () => {
-            player.infamy += 2;
-            return "You avoided the fight, but your reputation suffered.";
-        },
-    },
-    {
-        id: "scenario_neo_patrol",
-        text: "A N.E.O. patrol is chasing rebels in your area. What do you do?",
-        leftCaption: "Intervene",
-        rightCaption: "Hide",
-        leftEffect: () => {
-            const success = Math.random() > 0.5; // 30% chance to win
-            if (success) {
-                player.reputation += 10;
-                player.morality += 3;
-                return "You successfully disrupted the N.E.O. patrol, saving the rebels and gaining respect.";
-            } else {
-                player.health -= 25;
-                return "The N.E.O. patrol retaliated, injuring you severely. You gained moral respect but lost health.";
-            }
-        },
-        rightEffect: () => {
-            player.infamy += 2;
-            return "You hid and avoided confrontation, but your reputation took a hit.";
-        },
+const maxTurns = 10;
+function checkTurnProgression() {
+    turnCount++;
+    if (turnCount >= maxTurns) {
+        endGame("Turn Limit Ending: Time has run out. Your story in Rivers concludes.");
+        return true; // Stops further progression
     }
-];
+    return false; // Continue the game
+}
 
 // Character Avatars
 const characterAvatars = {
@@ -287,74 +107,6 @@ const characterProfiles = [
         stats: { morality: 50, infamy: 50, addiction: 20, health: 90, reputation: 15, tkPower: 10 }
     }
 ];
-
-const maxTurns = 20;
-
-function checkTurnProgression() {
-    turnCount++;
-    if (turnCount >= maxTurns) {
-        endGame("Turn Limit Ending: Time has run out. Your story in Rivers concludes.");
-        return true; // Stops further progression
-    }
-    return false; // Continue the game
-}
-
-// Dynamic Endgame Functionality
-function endGame(message) {
-    // Display the Game Over overlay
-    const overlay = document.getElementById("game-over-overlay");
-overlay.style.display = "flex"; // Should make the overlay visible
-    const messageElement = document.getElementById("game-over-message");
-    const resetButton = document.getElementById("reset-button");
-
-    // Update the message and show the overlay
-    messageElement.textContent = message || "Your journey ends here.";
-    overlay.style.display = "flex";
-
-    // Stop soundtrack if playing
-    if (typeof stopSoundtrack === "function") stopSoundtrack();
-
-    // Attach reset functionality
-    resetButton.onclick = () => resetGame();
-}
-
-// Reset the Game
-function resetGame() {
-    // Reset player stats
-    Object.assign(player, {
-        morality: 50,
-        infamy: 50,
-        addiction: 0,
-        health: 100,
-        reputation: 0,
-        tkPower: 0
-    });
-
-    // Hide the overlay
-    const overlay = document.getElementById("game-over-overlay");
-    overlay.style.display = "none";
-
-    // Reset HUD and restart the game
-    updateHUD();
-    displayCharacterSelection(); // Return to character selection
-}
-
-function checkGameOverConditions() {
-    if (player.health <= 0) {
-        const reason = player.health < 0
-            ? "You pushed your body beyond its limits, collapsing in the streets of Rivers."
-            : "You succumbed to your injuries and could not survive in Rivers.";
-        endGame(reason);
-        return true;
-    }
-
-    if (player.addiction >= 100) {
-        endGame("Addict Ending: Your addiction consumed you, leaving you lost in the virtual world.");
-        return true;
-    }
-
-    return false; // Game continues
-}
 
 function nextScenario() {
     if (checkGameOverConditions() || checkTurnProgression()) {
@@ -424,15 +176,15 @@ function selectCharacter(characterId) {
 
 // Natural Healing and Addiction Reduction
 function applyNaturalHealing() {
-    const healingAmount = 1; // Health restored per turn
-    const addictionReduction = 1; // Addiction reduced per turn
+    const healingAmount = 0; // Health restored per turn
+    const addictionReduction = 0; // Addiction reduced per turn
 
     if (player.health < 100) {
         player.health = Math.min(player.health + healingAmount, 100);
     }
 
-    if (player.addiction > 0) {
-        player.addiction = Math.max(player.addiction - addictionReduction, 0);
+    if (player.addiction > 2) {
+        player.addiction = Math.max(player.addiction - addictionReduction, 1);
     }
 
     logAction(`Natural recovery: +${healingAmount} health, -${addictionReduction} addiction.`);
@@ -444,51 +196,6 @@ function nextScenario() {
     loadScenario(randomIndex);
     applyNaturalHealing();
     updateHUD();
-}
-
-// Dynamic Endings
-function calculateEnding() {
-    if (player.health <= 0) {
-        return "Game Over: You succumbed to your injuries and could not survive in Rivers.";
-    }
-
-    if (player.addiction >= 100) {
-        return "Addict Ending: Your addiction consumed you, leaving you lost in the virtual world.";
-    }
-
-    if (player.morality >= 80 && player.reputation >= 50) {
-        return "Hero Ending: You became a symbol of hope, inspiring others to fight for justice.";
-    }
-
-    if (player.infamy >= 80 && player.reputation >= 50) {
-        return "Villain Ending: You rose to power through fear and manipulation, becoming a legend of darkness.";
-    }
-
-    if (player.morality >= 50 && player.infamy >= 50) {
-        return "Grey Ending: You navigated the fine line between good and evil, leaving an ambiguous legacy.";
-    }
-
-    if (player.reputation >= 100) {
-        return "Legend Ending: Your influence reshaped Rivers, and your name will be remembered forever.";
-    }
-
-    return "Survivor Ending: You survived in Rivers, but your story ends as just another citizen struggling to live.";
-}
-
-function calculateEnding() {
-    if (player.morality >= 80 && player.reputation >= 50) {
-        return "Hero Ending: Your selfless actions have inspired hope across Rivers.";
-    }
-    if (player.infamy >= 80 && player.reputation >= 50) {
-        return "Villain Ending: You rose to power, feared and respected by all.";
-    }
-    if (player.addiction >= 50 && player.health >= 50) {
-        return "Neutral Ending: You managed to survive, but the struggle continues.";
-    }
-    if (turnCount >= 20) {
-        return "Escape Ending: You left Rivers behind, seeking a new life beyond the city's walls.";
-    }
-    return "Default Ending: Your journey in Rivers has come to a quiet close.";
 }
 
 // Trigger Ending
@@ -504,39 +211,259 @@ function endGame(message) {
     if (typeof stopSoundtrack === "function") stopSoundtrack();
 }
 
+// Dynamic Endgame Functionality
+function endGame(message) {
+    // Display the Game Over overlay
+    const overlay = document.getElementById("game-over-overlay");
+overlay.style.display = "flex"; // Should make the overlay visible
+    const messageElement = document.getElementById("game-over-message");
+    const resetButton = document.getElementById("reset-button");
 
-// Add battle function directly used in scenarios
-function startBattle(enemy) {
-    logAction(`You encounter ${enemy.name}! Prepare for battle.`);
+    // Update the message and show the overlay
+    messageElement.textContent = message || "Your journey ends here.";
+    overlay.style.display = "flex";
 
-    function playerAttack() {
-        const damage = Math.floor(Math.random() * 10) + 10;
-        enemy.health -= damage;
-        logAction(`You dealt ${damage} damage to ${enemy.name}.`);
+    // Stop soundtrack if playing
+    if (typeof stopSoundtrack === "function") stopSoundtrack();
 
-        if (enemy.health <= 0) {
-            logAction(enemy.onWin());
-            updateHUD();
-            return;
-        }
-
-        enemyAttack();
-    }
-
-    function enemyAttack() {
-        const damage = Math.floor(Math.random() * enemy.damage) + 5;
-        player.health -= damage;
-        logAction(`${enemy.name} dealt ${damage} damage to you.`);
-
-        if (player.health <= 0) {
-            logAction(enemy.onLose());
-        } else {
-            updateHUD();
-        }
-    }
-
-    playerAttack();
+    // Attach reset functionality
+    resetButton.onclick = () => resetGame();
 }
+
+// Reset the Game
+function resetGame() {
+    // Reset player stats
+    Object.assign(player, {
+        morality: 50,
+        infamy: 50,
+        addiction: 0,
+        health: 100,
+        reputation: 0,
+        tkPower: 0
+    });
+
+    // Hide the overlay
+    const overlay = document.getElementById("game-over-overlay");
+    overlay.style.display = "none";
+
+    // Reset HUD and restart the game
+    updateHUD();
+    displayCharacterSelection(); // Return to character selection
+}
+
+function checkGameOverConditions() {
+    if (player.health <= 0) {
+        const reason = player.health < 0
+            ? "You pushed your body beyond its limits, collapsing in the streets of Rivers."
+            : "You succumbed to your injuries and could not survive in Rivers.";
+        endGame(reason);
+        return true;
+    }
+
+    if (player.addiction >= 100) {
+        endGame("Addict Ending: Your addiction consumed you, leaving you lost in the virtual world.");
+        return true;
+    }
+    {
+        if (player.morality >= 80 && player.reputation >= 50) {
+            return "Hero Ending: You became a symbol of hope, inspiring others to fight for justice.";
+        }
+    
+        if (player.infamy >= 80 && player.reputation >= 50) {
+            return "Villain Ending: You rose to power through fear and manipulation, becoming a legend of darkness.";
+        }
+    
+        if (player.morality >= 50 && player.infamy >= 50) {
+            return "Grey Ending: You navigated the fine line between good and evil, leaving an ambiguous legacy.";
+        }
+    
+        if (player.reputation >= 100) {
+            return "Legend Ending: Your influence reshaped Rivers, and your name will be remembered forever.";
+        }
+        if (player.turnCount = 30) {
+        return "Survivor Ending: You survived in Rivers, but your story ends as just another citizen struggling to live.";
+        }
+    }
+    return false; // Game continues
+}
+
+// Scenarios and Outcomes
+const scenarios = [
+    // Morality vs. Infamy
+    {
+        id: "scenario_vendor",
+        text: "You encounter a street vendor selling boosters. What do you do?",
+        leftCaption: "Buy something",
+        rightCaption: "Walk away",
+        leftEffect: () => {
+            player.infamy += 3;
+            player.addiction += 30;
+            return "You bought some boosters, boosting your infamy but increasing your addiction.";
+        },
+        rightEffect: () => {
+            player.morality += 2;
+            return "You avoided trouble and preserved your morality.";
+        },
+    },
+    {
+        id: "scenario_citizen_rescue",
+        text: "You come across a citizen trapped under debris. Do you risk your safety to help them?",
+        leftCaption: "Help them",
+        rightCaption: "Keep moving",
+        leftEffect: () => {
+            player.morality += 4;
+            player.health -= 15;
+            return "You rescued the citizen, greatly increasing your morality but taking damage.";
+        },
+        rightEffect: () => {
+            player.infamy += 15;
+            return "You left them behind, saving yourself but losing respect.";
+        },
+    },
+
+    // Survival and Resource Management
+    {
+        id: "scenario_package",
+        text: "A suspicious package lies in front of you. Do you open it?",
+        leftCaption: "Leave it alone",
+        rightCaption: "Open the package",
+        leftEffect: () => {
+            player.health += 5;
+            player.morality -= 1;
+            return "You avoided potential danger but lost an opportunity to gain influence.";
+        },
+        rightEffect: () => {
+            player.infamy += 2;
+            player.health -= 20;
+            return "The package contained toxic material. You gained infamy but took damage.";
+        },
+    },
+    {
+        id: "scenario_neighbor_help",
+        text: "A neighbor asks for your help during a blackout. Do you assist?",
+        leftCaption: "Try to fix it",
+        rightCaption: "Stay home",
+        leftEffect: () => {
+            player.morality += 10;
+            player.health -= 10;
+            return "You helped restore power but injured yourself in the process.";
+        },
+        rightEffect: () => {
+            player.infamy += 2;
+            return "You stayed safe but lost respect among your neighbors.";
+        },
+    },
+
+    // VR Addiction and Temptation
+    {
+        id: "scenario_vr_offer",
+        text: "A vendor offers free VR sessions. Do you accept?",
+        leftCaption: "Decline",
+        rightCaption: "Accept",
+        leftEffect: () => {
+            player.health += 5;
+            player.morality += 5;
+            return "You avoided the temptation and preserved your health.";
+        },
+        rightEffect: () => {
+            player.addiction += 20;
+            player.infamy += 10;
+            return "The VR session was addictive, increasing your addiction and infamy.";
+        },
+    },
+    {
+        id: "scenario_hacker_vr",
+        text: "A hacker offers to share hidden N.E.O. secrets in VR. Do you log in?",
+        leftCaption: "Log in",
+        rightCaption: "Ignore the offer",
+        leftEffect: () => {
+            player.infamy += 7;
+            player.addiction += 10;
+            return "You gained valuable secrets but at the cost of addiction.";
+        },
+        rightEffect: () => {
+            player.morality += 5;
+            return "You ignored the hacker, keeping your conscience clear.";
+        },
+    },
+
+    // Rebellion and Risk
+    {
+        id: "scenario_rebel_meeting",
+        text: "Someone gives you a flyer about a rebellion meeting. Do you go?",
+        leftCaption: "Attend the meeting",
+        rightCaption: "Ignore it",
+        leftEffect: () => {
+            player.infamy += 4;
+            player.addiction += 5;
+            return "You attended the meeting, gaining rebel allies but increasing your addiction.";
+        },
+        rightEffect: () => {
+            player.health += 5;
+            player.morality += 2;
+            return "You stayed away, keeping yourself safe and clear-headed.";
+        },
+    },
+    {
+        id: "scenario_neighbor_spy",
+        text: "An officer orders you to report a neighbor’s suspicious activity. Do you comply?",
+        leftCaption: "Report them",
+        rightCaption: "Refuse",
+        leftEffect: () => {
+            player.infamy += 10;
+            return "You reported your neighbor, gaining infamy among locals.";
+        },
+        rightEffect: () => {
+            player.morality += 3;
+            player.reputation -= 3;
+            return "You refused to comply, showing moral strength but losing favor with authorities.";
+        },
+    },
+
+    // Text-Based Combat Simulations
+    {
+        id: "scenario_street_punks",
+        text: "You encounter a group of street punks harassing civilians. What do you do?",
+        leftCaption: "Confront them",
+        rightCaption: "Walk away",
+        leftEffect: () => {
+            const success = Math.random() > 0.5; // 30% chance to win
+            if (success) {
+                player.reputation += 5;
+                player.morality += 2;
+                return "You confronted the street punks and successfully stopped them, gaining reputation and morality.";
+            } else {
+                player.health -= 20;
+                return "The street punks fought back, injuring you. You lost health but gained moral respect.";
+            }
+        },
+        rightEffect: () => {
+            player.infamy += 4;
+            return "You avoided the fight, but your reputation suffered.";
+        },
+    },
+    {
+        id: "scenario_neo_patrol",
+        text: "A N.E.O. patrol is chasing rebels in your area. What do you do?",
+        leftCaption: "Intervene",
+        rightCaption: "Hide",
+        leftEffect: () => {
+            const success = Math.random() > 0.5; // 15% chance to win
+            if (success) {
+                player.reputation += 15;
+                player.morality += 6;
+                return "You successfully disrupted the N.E.O. patrol, saving the rebels and gaining respect.";
+            } else {
+                player.health -= 25;
+                return "The N.E.O. patrol retaliated, injuring you severely. You gained moral respect but lost health.";
+            }
+        },
+        rightEffect: () => {
+            player.infamy += 4;
+            return "You hid and avoided confrontation, but your reputation took a hit.";
+        },
+    }
+];
 
 // DOM Elements
 const statsElements = {
