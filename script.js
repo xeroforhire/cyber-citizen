@@ -1,6 +1,6 @@
 // Global Variables
 let turnCount = 0;
-const maxTurns = 10;
+const maxTurns = 30;
 
 // Initial Player Stats
 const player = {
@@ -132,8 +132,8 @@ function selectCharacter(characterId) {
 
 // Natural Healing and Addiction Reduction (Per Turn)
 function applyNaturalHealing() {
-    const healingAmount = 0;       // Adjust as needed
-    const addictionReduction = 0;  // Adjust as needed
+    const healingAmount = 3;       // Adjust as needed
+    const addictionReduction = 1;  // Adjust as needed
 
     if (player.health < 100) {
         player.health = Math.min(player.health + healingAmount, 100);
