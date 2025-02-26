@@ -1,6 +1,6 @@
 // Global Variables
 let turnCount = 0;
-const maxTurns = 30;
+const maxTurns = 10;
 
 // Initial Player Stats
 const player = {
@@ -132,8 +132,8 @@ function selectCharacter(characterId) {
 
 // Natural Healing and Addiction Reduction (Per Turn)
 function applyNaturalHealing() {
-    const healingAmount = 1;       // Adjust as needed
-    const addictionReduction = 2;  // Adjust as needed
+    const healingAmount = 0;       // Adjust as needed
+    const addictionReduction = 0;  // Adjust as needed
 
     if (player.health < 100) {
         player.health = Math.min(player.health + healingAmount, 100);
@@ -186,7 +186,7 @@ let scenarios = [
             return "You left them behind, saving yourself but losing respect.";
         }
     }
-    // You can have additional hard-coded scenarios here.
+    // Additional hard-coded scenarios can go here.
 ];
 
 // Cache DOM Elements for Efficiency
@@ -223,7 +223,7 @@ function loadScenario(index) {
     };
 }
 
-// Check if Game Over Conditions Are Met
+// Check if Game Over Conditions Are Met, Including Win Conditions
 function checkGameOverConditions() {
     if (player.health <= 0) {
         endGame("Game Over: You succumbed to your injuries and could not survive in Rivers.");
@@ -231,6 +231,15 @@ function checkGameOverConditions() {
     }
     if (player.addiction >= 100) {
         endGame("Addict Ending: Your addiction consumed you, leaving you lost in the virtual world.");
+        return true;
+    }
+    // Win conditions:
+    if (player.morality >= 100) {
+        endGame("Hero Ending: Your unwavering morality has made you a local hero in Rivers.");
+        return true;
+    }
+    if (player.infamy >= 100) {
+        endGame("Criminal Ending: Your notorious actions have branded you as a criminal.");
         return true;
     }
     return false;
