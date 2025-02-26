@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenarios>
-  
+  <!-- Original 10 Scenarios -->
   <scenario>
     <id>scenario_vendor</id>
     <text>You encounter a street vendor selling boosters. What do you do?</text>
@@ -146,6 +146,7 @@
       } else {
           player.health -= 20;
           return "They fought back and injured you.";
+      }
     ]]></leftEffect>
     <rightEffect><![CDATA[
       player.infamy += 4;
@@ -167,12 +168,15 @@
       } else {
           player.health -= 25;
           return "The patrol retaliated, injuring you.";
+      }
     ]]></leftEffect>
     <rightEffect><![CDATA[
       player.infamy += 4;
       return "You hid, and your infamy increased slightly.";
     ]]></rightEffect>
   </scenario>
+
+  <!-- New Scenarios (11-30) -->
 
   <scenario>
     <id>scenario_graffiti</id>
