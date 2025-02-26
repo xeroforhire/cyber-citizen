@@ -176,8 +176,6 @@
     ]]></rightEffect>
   </scenario>
 
-  <!-- New Scenarios (11-30) -->
-
   <scenario>
     <id>scenario_graffiti</id>
     <text>You see a mural with a rebellious message. Do you add your own mark?</text>
