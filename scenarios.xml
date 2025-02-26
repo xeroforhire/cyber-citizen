@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenarios>
+  <!-- Original 10 Scenarios -->
+  <scenario>
+    <id>scenario_vendor</id>
+    <text>You encounter a street vendor selling boosters. What do you do?</text>
+    <leftCaption>Buy something</leftCaption>
+    <rightCaption>Walk away</rightCaption>
+    <leftEffect><![CDATA[
+      player.infamy += 3;
+      player.addiction += 30;
+      return "You bought boosters, increasing your infamy and addiction.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.morality += 2;
+      return "You avoided trouble and preserved your morality.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_citizen_rescue</id>
+    <text>You come across a citizen trapped under debris. Do you risk your safety to help them?</text>
+    <leftCaption>Help them</leftCaption>
+    <rightCaption>Keep moving</rightCaption>
+    <leftEffect><![CDATA[
+      player.morality += 4;
+      player.health -= 15;
+      return "You rescued the citizen, increasing your morality but taking damage.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.infamy += 15;
+      return "You left them behind, saving yourself but losing respect.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_package</id>
+    <text>A suspicious package lies in front of you. Do you open it?</text>
+    <leftCaption>Leave it alone</leftCaption>
+    <rightCaption>Open it</rightCaption>
+    <leftEffect><![CDATA[
+      player.health += 5;
+      player.morality -= 1;
+      return "You avoided potential danger, but lost an opportunity.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.infamy += 2;
+      player.health -= 20;
+      return "The package was toxic! You gained infamy but took damage.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_neighbor_help</id>
+    <text>A neighbor asks for help during a blackout. What do you do?</text>
+    <leftCaption>Assist them</leftCaption>
+    <rightCaption>Ignore them</rightCaption>
+    <leftEffect><![CDATA[
+      player.morality += 10;
+      player.health -= 10;
+      return "You helped restore power, increasing your morality but hurting yourself.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.infamy += 2;
+      return "You ignored the neighbor, slightly increasing your infamy.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_vr_offer</id>
+    <text>A vendor offers free VR sessions. Do you accept?</text>
+    <leftCaption>Decline</leftCaption>
+    <rightCaption>Accept</rightCaption>
+    <leftEffect><![CDATA[
+      player.health += 5;
+      player.morality += 5;
+      return "You declined, preserving your health and morality.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.addiction += 20;
+      player.infamy += 10;
+      return "The VR session was addictive, increasing your addiction and infamy.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_hacker_vr</id>
+    <text>A hacker offers you secret information in VR. Do you log in?</text>
+    <leftCaption>Log in</leftCaption>
+    <rightCaption>Ignore</rightCaption>
+    <leftEffect><![CDATA[
+      player.infamy += 7;
+      player.addiction += 10;
+      return "You logged in, gaining secrets at the cost of increased addiction.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.morality += 5;
+      return "You ignored the offer, preserving your moral standing.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_rebel_meeting</id>
+    <text>You receive a flyer for a rebel meeting. Do you attend?</text>
+    <leftCaption>Attend</leftCaption>
+    <rightCaption>Ignore</rightCaption>
+    <leftEffect><![CDATA[
+      player.infamy += 4;
+      player.addiction += 5;
+      return "You attended the meeting, gaining allies but increasing your addiction.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.health += 5;
+      player.morality += 2;
+      return "You stayed away, preserving your health and morality.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_neighbor_spy</id>
+    <text>An officer orders you to spy on a neighbor. What do you do?</text>
+    <leftCaption>Report them</leftCaption>
+    <rightCaption>Refuse</rightCaption>
+    <leftEffect><![CDATA[
+      player.infamy += 10;
+      return "You reported your neighbor, increasing your infamy.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.morality += 3;
+      player.reputation -= 3;
+      return "You refused to report, boosting your morality but lowering your reputation.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_street_punks</id>
+    <text>You encounter street punks harassing civilians. What do you do?</text>
+    <leftCaption>Confront them</leftCaption>
+    <rightCaption>Walk away</rightCaption>
+    <leftEffect><![CDATA[
+      const success = Math.random() > 0.5;
+      if (success) {
+          player.reputation += 5;
+          player.morality += 2;
+          return "You confronted and stopped them, gaining reputation and morality.";
+      } else {
+          player.health -= 20;
+          return "They fought back and injured you.";
+      }
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.infamy += 4;
+      return "You walked away, but your reputation suffered.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_neo_patrol</id>
+    <text>A N.E.O. patrol is chasing rebels nearby. What do you do?</text>
+    <leftCaption>Intervene</leftCaption>
+    <rightCaption>Hide</rightCaption>
+    <leftEffect><![CDATA[
+      const success = Math.random() > 0.5;
+      if (success) {
+          player.reputation += 15;
+          player.morality += 6;
+          return "You intervened successfully, gaining reputation and moral standing.";
+      } else {
+          player.health -= 25;
+          return "The patrol retaliated, injuring you.";
+      }
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.infamy += 4;
+      return "You hid, and your infamy increased slightly.";
+    ]]></rightEffect>
+  </scenario>
+
+  <!-- New Scenarios (11-30) -->
+
+  <scenario>
+    <id>scenario_graffiti</id>
+    <text>You see a mural with a rebellious message. Do you add your own mark?</text>
+    <leftCaption>Add your mark</leftCaption>
+    <rightCaption>Ignore it</rightCaption>
+    <leftEffect><![CDATA[
+      player.reputation += 5;
+      player.morality += 3;
+      return "You added your mark, inspiring the community.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You chose not to engage, leaving the mural untouched.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_police_bribe</id>
+    <text>A corrupt officer offers you a bribe to overlook minor infractions. Do you pay?</text>
+    <leftCaption>Pay the bribe</leftCaption>
+    <rightCaption>Refuse</rightCaption>
+    <leftEffect><![CDATA[
+      player.infamy += 5;
+      player.morality -= 5;
+      return "You paid the bribe, compromising your integrity.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.morality += 3;
+      return "You refused, maintaining your principles.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_drug_dealer</id>
+    <text>A shady dealer offers you experimental pills. Do you buy them?</text>
+    <leftCaption>Buy the pills</leftCaption>
+    <rightCaption>Walk away</rightCaption>
+    <leftEffect><![CDATA[
+      player.addiction += 25;
+      player.health -= 10;
+      return "The pills gave you a rush but harmed your health.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You wisely declined, avoiding potential harm.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_tech_upgrade</id>
+    <text>A mysterious figure offers you a cybernetic upgrade. Do you accept?</text>
+    <leftCaption>Accept the upgrade</leftCaption>
+    <rightCaption>Decline</rightCaption>
+    <leftEffect><![CDATA[
+      player.tkPower += 20;
+      player.health -= 5;
+      return "You embraced the upgrade, boosting your abilities.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You chose to remain unchanged.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_blood_donation</id>
+    <text>You are offered the chance to donate blood for a reward. Do you donate?</text>
+    <leftCaption>Donate blood</leftCaption>
+    <rightCaption>Refuse</rightCaption>
+    <leftEffect><![CDATA[
+      player.health -= 5;
+      player.reputation += 5;
+      return "You donated blood and earned community respect.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You declined to donate.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_sports_event</id>
+    <text>A local sports event invites you to participate. Do you join?</text>
+    <leftCaption>Participate</leftCaption>
+    <rightCaption>Decline</rightCaption>
+    <leftEffect><![CDATA[
+      player.health += 5;
+      player.reputation += 3;
+      return "You participated and boosted your health and reputation.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You chose not to participate.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_fundraiser</id>
+    <text>A community fundraiser is underway. Do you contribute?</text>
+    <leftCaption>Contribute</leftCaption>
+    <rightCaption>Ignore</rightCaption>
+    <leftEffect><![CDATA[
+      player.morality += 5;
+      player.reputation += 5;
+      return "Your contribution uplifted the community.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You did not contribute.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_vandalism</id>
+    <text>You witness a gang vandalizing public property. Do you report them?</text>
+    <leftCaption>Report</leftCaption>
+    <rightCaption>Ignore</rightCaption>
+    <leftEffect><![CDATA[
+      player.morality += 4;
+      return "You reported the incident, upholding the law.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.infamy += 3;
+      return "You ignored it, and your reputation suffered.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_heist</id>
+    <text>A gang invites you to participate in a heist. Do you join?</text>
+    <leftCaption>Join the heist</leftCaption>
+    <rightCaption>Decline</rightCaption>
+    <leftEffect><![CDATA[
+      player.infamy += 10;
+      player.morality -= 5;
+      return "You joined the heist, tarnishing your reputation.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.morality += 3;
+      return "You refused, preserving your integrity.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_escape</id>
+    <text>Your location is compromised. Do you take a risky shortcut?</text>
+    <leftCaption>Take the shortcut</leftCaption>
+    <rightCaption>Play it safe</rightCaption>
+    <leftEffect><![CDATA[
+      player.health -= 10;
+      player.reputation += 5;
+      return "You risked it and earned respect despite some injuries.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You chose the safe route with no major changes.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_market_crash</id>
+    <text>A local market collapses. Do you help rebuild or exploit the chaos?</text>
+    <leftCaption>Help rebuild</leftCaption>
+    <rightCaption>Exploit</rightCaption>
+    <leftEffect><![CDATA[
+      player.morality += 5;
+      player.reputation += 5;
+      return "You helped rebuild, earning community respect.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.infamy += 5;
+      return "You exploited the chaos, increasing your notoriety.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_lost_wallet</id>
+    <text>You find a lost wallet on the street. Do you return it?</text>
+    <leftCaption>Return it</leftCaption>
+    <rightCaption>Keep it</rightCaption>
+    <leftEffect><![CDATA[
+      player.morality += 5;
+      player.reputation += 5;
+      return "Your honesty shines through.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.infamy += 5;
+      return "You kept the wallet, staining your reputation.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_public_speech</id>
+    <text>A local leader invites you to give a speech. Do you accept?</text>
+    <leftCaption>Accept</leftCaption>
+    <rightCaption>Decline</rightCaption>
+    <leftEffect><![CDATA[
+      player.reputation += 10;
+      player.morality += 5;
+      return "Your speech resonated with the community.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.reputation -= 2;
+      return "Your absence was noted.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_secret_meeting</id>
+    <text>You overhear a secret meeting of influential figures. Do you eavesdrop?</text>
+    <leftCaption>Eavesdrop</leftCaption>
+    <rightCaption>Stay out</rightCaption>
+    <leftEffect><![CDATA[
+      player.infamy += 5;
+      return "You gathered valuable information.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You chose not to get involved.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_charity</id>
+    <text>A local charity asks for volunteers. Do you help out?</text>
+    <leftCaption>Volunteer</leftCaption>
+    <rightCaption>Decline</rightCaption>
+    <leftEffect><![CDATA[
+      player.morality += 6;
+      player.reputation += 6;
+      return "Your volunteer work earned you praise.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You declined to help.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_black_market</id>
+    <text>You have a chance to buy rare tech on the black market. Do you purchase it?</text>
+    <leftCaption>Buy it</leftCaption>
+    <rightCaption>Decline</rightCaption>
+    <leftEffect><![CDATA[
+      player.tkPower += 15;
+      player.addiction += 5;
+      return "The tech boost enhanced your abilities, but at a cost.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You decided against the risk.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_online_raid</id>
+    <text>Authorities announce an online raid targeting cyber-criminals. Do you cover your tracks?</text>
+    <leftCaption>Cover your tracks</leftCaption>
+    <rightCaption>Do nothing</rightCaption>
+    <leftEffect><![CDATA[
+      player.infamy += 8;
+      return "You covered your tracks and avoided detection.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.infamy += 4;
+      return "Your inaction cost you dearly.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_mentor</id>
+    <text>A seasoned veteran offers to mentor you. Do you accept?</text>
+    <leftCaption>Accept</leftCaption>
+    <rightCaption>Decline</rightCaption>
+    <leftEffect><![CDATA[
+      player.reputation += 10;
+      player.morality += 5;
+      return "The mentorship guided you to success.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      return "You missed out on valuable guidance.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_family</id>
+    <text>A family member reaches out for help. Do you assist them?</text>
+    <leftCaption>Assist them</leftCaption>
+    <rightCaption>Ignore them</rightCaption>
+    <leftEffect><![CDATA[
+      player.morality += 8;
+      player.reputation += 8;
+      return "Your support strengthened family bonds and your community standing.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.reputation -= 4;
+      return "Your inaction hurt your reputation.";
+    ]]></rightEffect>
+  </scenario>
+
+  <scenario>
+    <id>scenario_final_choice</id>
+    <text>You face a final critical decision. Do you choose the path of redemption or corruption?</text>
+    <leftCaption>Redemption</leftCaption>
+    <rightCaption>Corruption</rightCaption>
+    <leftEffect><![CDATA[
+      player.morality = 100;
+      return "Your choice for redemption makes you a local hero.";
+    ]]></leftEffect>
+    <rightEffect><![CDATA[
+      player.infamy = 100;
+      return "Your corrupt path brands you as a notorious criminal.";
+    ]]></rightEffect>
+  </scenario>
+</scenarios>
